@@ -5,11 +5,11 @@ var Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    const y_psition = [60, 140, 220];
+    this.y_psition = [60, 140, 220];
     this.sprite = 'images/enemy-bug.png';
     this.x = -200*Math.random();
-    this.y = y_psition[Math.floor(Math.random() * y_psition.length)];
-    this.speed = 50 * Math.random();
+    this.y = this.y_psition[Math.floor(Math.random() * this.y_psition.length)];
+    this.speed = 100 * Math.random();
 };
 
 // Update the enemy's position, required method for game
@@ -20,6 +20,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x > 504){
         this.x = -200 * Math.random();
+        this.y = this.y_psition[Math.floor(Math.random() * this.y_psition.length)];
     } else {
         this.x += this.speed * dt;
     }
@@ -39,9 +40,17 @@ var Player = function() {
     this.y = 400;
 };
 
-Player.prototype.update = function(dt) {
+Player.prototype.update = function() {
 
-    // this.x += 10*dt;
+    // console.log("allEnemies: ", allEnemies);
+    for (enemy of allEnemies){
+        let distance = Math.sqrt((enemy.x-this.x)*(enemy.x-this.x) + (enemy.y-this.y)*(enemy.y-this.y));
+        // console.log("distance: ", distance);
+        if (distance < 30){
+            this.y = 400;
+        }
+    }
+
 };
 
 Player.prototype.render = function() {
@@ -51,8 +60,6 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(e) {
     // console.log("e: ", e);
-    console.log("x: ", this.x);
-    console.log("y: ", this.y);
     if (e != undefined) {
         if  (e == 'left') {
             if (this.x != -1) {
@@ -82,8 +89,11 @@ Player.prototype.handleInput = function(e) {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-for (let i =0; i < Math.floor(Math.random() * 10); i++){
-    allEnemies = [new Enemy, new Enemy, new Enemy];
+allEnemies = [];
+// get normally distributed random numbers
+for (let i =0; i < Math.floor(3*(Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random())); i++){
+    // allEnemies = [new Enemy, new Enemy, new Enemy];
+    allEnemies.push(new Enemy);
 }
 // Place the player object in a variable called player
 player = new Player;
