@@ -21,6 +21,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 504){
         this.x = -200 * Math.random();
         this.y = this.y_psition[Math.floor(Math.random() * this.y_psition.length)];
+        this.speed = 100 * Math.random();
     } else {
         this.x += this.speed * dt;
     }
