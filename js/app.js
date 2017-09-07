@@ -7,9 +7,9 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     const y_psition = [60, 140, 220];
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
+    this.x = -200*Math.random();
     this.y = y_psition[Math.floor(Math.random() * y_psition.length)];
-    this.speed = 30 * Math.random();
+    this.speed = 50 * Math.random();
 };
 
 // Update the enemy's position, required method for game
@@ -18,7 +18,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dt;
+    if (this.x > 504){
+        this.x = -200 * Math.random();
+    } else {
+        this.x += this.speed * dt;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -31,13 +35,13 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
-    this.x = 0;
-    this.y = 0;
+    this.x = 100;
+    this.y = 400;
 };
 
 Player.prototype.update = function(dt) {
 
-    this.x += 10*dt;
+    // this.x += 10*dt;
 };
 
 Player.prototype.render = function() {
@@ -46,22 +50,41 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(e) {
-    if  (e == 'left'){
-        this.x += 80;
-    } else if (e == 'right'){
-        this.x -= 80;
-    } else if (e == 'up'){
-        this.y += 80;
-    } else if (e == 'down'){
-        this.y -= 80;
+    // console.log("e: ", e);
+    console.log("x: ", this.x);
+    console.log("y: ", this.y);
+    if (e != undefined) {
+        if  (e == 'left') {
+            if (this.x != -1) {
+                this.x -= 101;
+            }
+        } else if (e == 'right') {
+            if (this.x != 403) {
+                this.x += 101;
+            }
+        } else if (e == 'up') {
+            if (this.y == 52) {
+                this.y = 400;
+            } else {
+                this.y -= 87;
+            }
+        } else if (e == 'down') {
+            if (this.y != 400) {
+                this.y += 87;
+            }
+        }
+        // console.log("x: ", this.x);
+        // console.log("y: ", this.y);
+        // console.log("player moved!");
     }
-    console.log("player moved!");
 };
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-allEnemies = [new Enemy, new Enemy, new Enemy];
+for (let i =0; i < Math.floor(Math.random() * 10); i++){
+    allEnemies = [new Enemy, new Enemy, new Enemy];
+}
 // Place the player object in a variable called player
 player = new Player;
 
